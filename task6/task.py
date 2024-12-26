@@ -55,11 +55,11 @@ def defuzzify(aggregated):
     denominator = sum(y for _, y in aggregated)
     return numerator / denominator if denominator != 0 else 0
 
-def task6(temp_json, heating_json, rules_json, current_temp):
+def task(temp_json, heating_json, rules_json, current_temp):
     """Основная функция для выполнения задания."""
     # Загрузка данных из JSON
     temp_sets = json.loads(temp_json)["температура"]
-    heating_sets = json.loads(heating_json)["уровень нагрева"]  # Подключаем правильный ключ
+    heating_sets = json.loads(heating_json)["уровень нагрева"]
     rules = json.loads(rules_json)
     
     # Фаззификация
