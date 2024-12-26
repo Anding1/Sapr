@@ -2,27 +2,27 @@ import pandas as pd
 import sys
 
 def task1(file_path, row_number, column_number):
-    # Читаем CSV файл в DataFrame
+    # Р§РёС‚Р°РµРј CSV С„Р°Р№Р» РІ DataFrame
     df = pd.read_csv(file_path)
 
-    # Проверяем, что номера строк и колонок находятся в допустимых пределах
+    # РџСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ РЅРѕРјРµСЂР° СЃС‚СЂРѕРє Рё РєРѕР»РѕРЅРѕРє РЅР°С…РѕРґСЏС‚СЃСЏ РІ РґРѕРїСѓСЃС‚РёРјС‹С… РїСЂРµРґРµР»Р°С…
     if row_number < 0 or row_number >= len(df):
-        print(f"Ошибка: Номер строки {row_number} вне диапазона.")
+        print(f"РћС€РёР±РєР°: РќРѕРјРµСЂ СЃС‚СЂРѕРєРё {row_number} РІРЅРµ РґРёР°РїР°Р·РѕРЅР°.")
         return
     if column_number < 0 or column_number >= len(df.columns):
-        print(f"Ошибка: Номер колонки {column_number} вне диапазона.")
+        print(f"РћС€РёР±РєР°: РќРѕРјРµСЂ РєРѕР»РѕРЅРєРё {column_number} РІРЅРµ РґРёР°РїР°Р·РѕРЅР°.")
         return
 
-    # Получаем значение ячейки
+    # РџРѕР»СѓС‡Р°РµРј Р·РЅР°С‡РµРЅРёРµ СЏС‡РµР№РєРё
     cell_value = df.iat[row_number, column_number]
-    print(f"Значение ячейки в строке {row_number + 1}, колонке {column_number + 1}: {cell_value}")
+    print(f"Р—РЅР°С‡РµРЅРёРµ СЏС‡РµР№РєРё РІ СЃС‚СЂРѕРєРµ {row_number + 1}, РєРѕР»РѕРЅРєРµ {column_number + 1}: {cell_value}")
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print("Использование: python script.py <путь_к_csv> <номер_строки> <номер_колонки>")
+        print("РСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ: python script.py <РїСѓС‚СЊ_Рє_csv> <РЅРѕРјРµСЂ_СЃС‚СЂРѕРєРё> <РЅРѕРјРµСЂ_РєРѕР»РѕРЅРєРё>")
     else:
         file_path = sys.argv[1]
-        row_number = int(sys.argv[2]) - 1  # Преобразуем к 0-индексации
-        column_number = int(sys.argv[3]) - 1  # Преобразуем к 0-индексации
+        row_number = int(sys.argv[2]) - 1  # РџСЂРµРѕР±СЂР°Р·СѓРµРј Рє 0-РёРЅРґРµРєСЃР°С†РёРё
+        column_number = int(sys.argv[3]) - 1  # РџСЂРµРѕР±СЂР°Р·СѓРµРј Рє 0-РёРЅРґРµРєСЃР°С†РёРё
         task1(file_path, row_number, column_number)
 
