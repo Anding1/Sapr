@@ -69,7 +69,7 @@ def calculate_entropy_dice():
     
     return [round(H_AB, 2), round(H_A, 2), round(H_B, 2), round(H_B_given_A, 2), round(I_A_B, 2)]
 
-def main():
+def task4():
     purchases_results = calculate_entropy_purchases()
     dice_results = calculate_entropy_dice()
     
@@ -78,4 +78,4 @@ def main():
         "Dice": dice_results
     }
 
-print(main())
+print(task4())
