@@ -1,6 +1,6 @@
 import numpy as np
+import pandas as pd
 from collections import deque
-import pandas as pd  
 
 class TreeLayers:
     def __init__(self, adjacency_matrix):
@@ -103,37 +103,35 @@ class TreeLayers:
         df = pd.DataFrame(data, columns=columns)
         return df
 
-    def print_layers(self):
-        """Вывод слоев наследства"""
-        for i, layer in enumerate(self.layers):
-            print(f"Уровень {i + 1}: {', '.join(self.nodes[node] for node in layer)}")
+def main(var: str) -> str:
+    # Преобразуем входную строку CSV в матрицу смежности
+    edges = [tuple(map(int, edge.split(','))) for edge in var.split(';')]
+    max_node = max(max(edge) for edge in edges) + 1  # Определяем размер матрицы
+    adjacency_matrix = np.zeros((max_node, max_node), dtype=int)
 
-# Пример матрицы смежности
-adjacency_matrix = np.array([
-    [0, 1, 1, 0, 0],
-    [0, 0, 0, 1, 0],
-    [0, 0, 0, 0, 1],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0]
-])
+    for parent, child in edges:
+        adjacency_matrix[parent][child] = 1  # Устанавливаем связь в матрице
 
-# Создаем объект класса TreeLayers
-tree_layers = TreeLayers(adjacency_matrix)
+    # Создаем объект класса TreeLayers
+    tree_layers = TreeLayers(adjacency_matrix)
 
-# Находим корень дерева
-root = tree_layers.find_root()
-if root is not None:
-    print(f"Корень дерева: {tree_layers.nodes[root]}")
+    # Находим корень дерева
+    root = tree_layers.find_root()
+    if root is not None:
+        # Разделяем дерево на слои наследства
+        tree_layers.bfs_layers(root)
 
-    # Разделяем дерево на слои наследства
-    tree_layers.bfs_layers(root)
+        # Создаем и выводим таблицу с информацией о вершинах
+        relation_table = tree_layers.create_relation_table()
 
-    # Выводим слои
-    tree_layers.print_layers()
+        # Преобразуем таблицу обратно в CSV-строку
+        csv_output = relation_table.to_csv(index=False, header=False)
+        return csv_output.strip()  # Убираем лишние пробелы и переносы
+    else:
+        return "Корень дерева не найден!"
 
-    # Создаем и выводим таблицу с информацией о вершинах
-    relation_table = tree_layers.create_relation_table()
-    print(relation_table)
-else:
-    print("Корень дерева не найден!")
-
+# Пример использования
+if __name__ == "__main__":
+    example_input = "0,1;0,2;1,3;1,4"  # Пример строки с рёбрами
+    result = main(example_input)
+    print(result)
