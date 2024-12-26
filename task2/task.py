@@ -103,14 +103,18 @@ class TreeLayers:
         df = pd.DataFrame(data, columns=columns)
         return df
 
+    def print_layers(self):
+        """Вывод слоев наследства"""
+        for i, layer in enumerate(self.layers):
+            print(f"Уровень {i + 1}: {', '.join(self.nodes[node] for node in layer)}")
+
 # Пример матрицы смежности
 adjacency_matrix = np.array([
-    [0, 1, 0, 0, 0, 0],
-    [0, 0, 1, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 1, 1],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0]
+    [0, 1, 1, 0, 0],
+    [0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 1],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0]
 ])
 
 # Создаем объект класса TreeLayers
@@ -124,8 +128,12 @@ if root is not None:
     # Разделяем дерево на слои наследства
     tree_layers.bfs_layers(root)
 
+    # Выводим слои
+    tree_layers.print_layers()
+
     # Создаем и выводим таблицу с информацией о вершинах
     relation_table = tree_layers.create_relation_table()
     print(relation_table)
 else:
     print("Корень дерева не найден!")
+
