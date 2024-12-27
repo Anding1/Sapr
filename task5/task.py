@@ -9,6 +9,9 @@ def build_relation_matrix(ranking, n):
     for idx, cluster in enumerate(ranking):
         if isinstance(cluster, int):
             cluster = [cluster]
+        else:
+            # Уплощаем вложенные списки
+            cluster = [item for sublist in cluster for item in (sublist if isinstance(sublist, list) else [sublist])]
 
         for i in cluster:
             for j in cluster:
@@ -18,6 +21,9 @@ def build_relation_matrix(ranking, n):
             for prev_cluster in ranking[:idx]:
                 if isinstance(prev_cluster, int):
                     prev_cluster = [prev_cluster]
+                else:
+                    prev_cluster = [item for sublist in prev_cluster for item in (sublist if isinstance(sublist, list) else [sublist])]
+
                 for j in prev_cluster:
                     Y[j - 1][i - 1] = 1
 
@@ -57,9 +63,6 @@ def find_core_AB(discrepancies):
     return core_AB
 
 
-
-
-
 def read_ranking_from_json(json_file):
     with open(json_file, 'r') as file:
         data = json.load(file)
@@ -80,21 +83,12 @@ def main(file_A, file_B, output_file):
     n = max(n_A, n_B)
 
     YA = build_relation_matrix(ranking_A, n)
-    #print("Матрица YA для ранжировки A:")
-    #print(YA)
-
     YB = build_relation_matrix(ranking_B, n)
-    #print("Матрица YB для ранжировки B:")
-    #print(YB)
 
     discrepancies = find_discrepancies(YA, YB)
-    #print(f"Противоречия: {discrepancies}")
-
     core_AB = find_core_AB(discrepancies)
-    #print(f"Ядро AB: {core_AB}")
 
     write_core_to_json(core_AB, output_file)
-    #print(f"Ядро AB записано в файл {output_file}")
 
 
 # Пример использования
@@ -103,3 +97,4 @@ file_B = 'b.json'
 output_file = 'core_AB.json'
 
 main(file_A, file_B, output_file)
+
