@@ -80,8 +80,7 @@ def main(file_A, file_B):
     return json.dumps({"core_AB": core_AB}, indent=4)
 
 # Пример использования
-if __name__ == "__main__":
     file_A = 'A.json'  
     file_B = 'B.json' 
-    result = main(file_A, file_B)
-    print(result)
+    output_file = 'core_AB.json'
+    main(file_A, file_B, output_file)
