@@ -81,7 +81,7 @@ def main(file_A, file_B):
 
 # Пример использования
 if __name__ == "__main__":
-    file_A = 'C:/Users/Наталья/Desktop/task5/A.json'  # Укажите путь к вашему файлу A
-    file_B = 'C:/Users/Наталья/Desktop/task5/B.json'  # Укажите путь к вашему файлу B
+    file_A = 'A.json'  
+    file_B = 'B.json' 
     result = main(file_A, file_B)
     print(result)
