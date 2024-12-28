@@ -1,7 +1,6 @@
 import numpy as np
 import json
 
-
 def build_relation_matrix(ranking, n):
     Y = np.zeros((n, n), dtype=int)
     np.fill_diagonal(Y, 1)
@@ -10,7 +9,6 @@ def build_relation_matrix(ranking, n):
         if isinstance(cluster, int):
             cluster = [cluster]
         else:
-            # Уплощаем вложенные списки
             cluster = [item for sublist in cluster for item in (sublist if isinstance(sublist, list) else [sublist])]
 
         for i in cluster:
@@ -29,18 +27,16 @@ def build_relation_matrix(ranking, n):
 
     return Y
 
-
 def find_discrepancies(YA, YB):
     n = YA.shape[0]
     discrepancies = []
     for i in range(n):
         for j in range(n):
             if YA[i, j] == 1 and YB[i, j] == 0 and YA[j, i] == 0 and YB[j, i] == 1:
-                discrepancies.append((i + 1, j + 1))  # Индексация с 1 для людей
+                discrepancies.append((i + 1, j + 1))
             elif YA[i, j] == 0 and YB[i, j] == 1 and YA[j, i] == 1 and YB[j, i] == 0:
                 discrepancies.append((j + 1, i + 1))
     return discrepancies
-
 
 def find_core_AB(discrepancies):
     core_AB = []
@@ -62,21 +58,13 @@ def find_core_AB(discrepancies):
 
     return core_AB
 
-
-def read_ranking_from_json(json_file):
-    with open(json_file, 'r') as file:
-        data = json.load(file)
-        return data['data']
-
-
-def write_core_to_json(core_AB, output_file):
-    with open(output_file, 'w') as file:
-        json.dump({"core_AB": core_AB}, file, indent=4)
-
-
-def main(file_A, file_B, output_file):
-    ranking_A = read_ranking_from_json(file_A)
-    ranking_B = read_ranking_from_json(file_B)
+def main(file_A, file_B):
+    # Чтение данных из файлов
+    with open(file_A, 'r') as f:
+        ranking_A = json.load(f)
+    
+    with open(file_B, 'r') as f:
+        ranking_B = json.load(f)
 
     n_A = sum(len(item) if isinstance(item, list) else 1 for item in ranking_A)
     n_B = sum(len(item) if isinstance(item, list) else 1 for item in ranking_B)
@@ -88,13 +76,12 @@ def main(file_A, file_B, output_file):
     discrepancies = find_discrepancies(YA, YB)
     core_AB = find_core_AB(discrepancies)
 
-    write_core_to_json(core_AB, output_file)
-
+    # Возвращаем результат в формате JSON-строки
+    return json.dumps({"core_AB": core_AB}, indent=4)
 
 # Пример использования
-file_A = 'a.json'
-file_B = 'b.json'
-output_file = 'core_AB.json'
-
-main(file_A, file_B, output_file)
-
+if __name__ == "__main__":
+    file_A = 'C:/Users/Наталья/Desktop/task5/A.json'  # Укажите путь к вашему файлу A
+    file_B = 'C:/Users/Наталья/Desktop/task5/B.json'  # Укажите путь к вашему файлу B
+    result = main(file_A, file_B)
+    print(result)
